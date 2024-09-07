@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import Sidebar from './sidebar'
 import Hamburger from 'hamburger-react'
@@ -35,4 +36,5 @@ export default function Layout({ children }) {
             {screenWidth > 768 || !isSidebarOpen ? children : <></>}
         </div>
     )
+
 }
