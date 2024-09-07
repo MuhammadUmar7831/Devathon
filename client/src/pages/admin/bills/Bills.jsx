@@ -22,6 +22,9 @@ const Bills = () => {
               Search
             </button>
           </div>
+          <button className="bg-gray-900 hover:bg-gray-800 rounded-md text-white p-2 disabled:cursor-not-allowed">
+            Generate Bills
+          </button>
         </div>
         <div className="">
           <BillTable />
