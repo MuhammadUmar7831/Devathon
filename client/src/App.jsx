@@ -12,6 +12,7 @@ import PrivateRoutes from "./components/PrivateRoutes"
 import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
 import AddCustomerSupport from "./pages/admin/addCustomerSupport/AddCustomerSupport"
 import Bills from "./pages/admin/bills/Bills"
+import ViewBills from "./pages/resident/viewBills/ViewBills"
 
 function App() {
   return (
@@ -34,7 +35,9 @@ function App() {
           </Route>
 
           {/* Resident Routes */}
-          <Route element={<PrivateRoutes role="resident" />}></Route>
+          <Route element={<PrivateRoutes role="resident" />}>
+            <Route path="/resident/viewBills" element={<ViewBills />} />
+          </Route>
 
           {/* Customer Support Routes */}
           <Route element={<PrivateRoutes role="customerSupport" />}></Route>
