@@ -173,7 +173,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(
     id,
     {
-      $set: { name, avatar },
+      $set: { FullName: name, avatar },
     },
     {
       new: true,
