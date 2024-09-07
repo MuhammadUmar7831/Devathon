@@ -10,6 +10,7 @@ import {
 } from "react-router-dom"
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
+import PrivateRoutes from "./components/PrivateRoutes"
 
 import PrivateRoutes from "./components/PrivateRoutes"
 import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
@@ -29,6 +30,7 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
 
 
+
           {/* Admin Routes */}
           <Route element={<PrivateRoutes role="admin" />}>
             <Route path="/admin/manageAccounts" element={<ManageAccounts />} />
@@ -46,7 +48,6 @@ function App() {
 
           {/* Customer Support Routes */}
           <Route element={<PrivateRoutes role="customerSupport" />}></Route>
-
         </Routes>
       </Router>
     </>
