@@ -6,7 +6,6 @@ import { setUser } from "../redux/user/userSlice"
 import { Navigate, Outlet } from "react-router-dom"
 import { getUserApi } from "../api/user.api"
 
-
 const PrivateRoutes = ({ role }) => {
   const { user } = useSelector((state) => state.user)
   const [loading, setLoading] = useState(true)
@@ -15,12 +14,10 @@ const PrivateRoutes = ({ role }) => {
   // Get user Function
   const getUser = async (role) => {
     if (user === null) {
-
       const response = await getUserApi()
       if (response.success) {
         dispatch(setUser(response.user))
       }
-
     }
     setLoading(false)
   }
@@ -38,9 +35,7 @@ const PrivateRoutes = ({ role }) => {
 
   return user !== null ? (
     <>
-
       <Layout children={<Outlet />} />
-
     </>
   ) : (
     <Navigate to="/auth/login" />
