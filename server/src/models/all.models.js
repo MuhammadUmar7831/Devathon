@@ -62,8 +62,8 @@ const billsSchema = new Schema({
     status: { 
         type: String, 
         required: true,
-        enum: ['pending', 'paid', 'overdue'],
-        default: 'pending'
+        enum: ['paid', 'unpaid'],
+        default: 'unpaid'
     },
     dueDate: { 
         type: Date, 
