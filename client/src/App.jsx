@@ -1,9 +1,10 @@
-import Sidebar from "./components/sidebar"
+import Layout from "./components/Layout"
+import Profile from "./pages/resident/Profile"
 
 function App() {
   return (
     <>
-      <Sidebar />
+      <Layout children={<Profile />} />
     </>
   )
 }
