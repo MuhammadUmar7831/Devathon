@@ -19,7 +19,7 @@ const consumptionSchema = new Schema({
     }
 });
 
-const Consumption = model('Consumption', consumptionSchema);
+export const Consumption = model('Consumption', consumptionSchema);
 
 // Rate Model
 const rateSchema = new Schema({
@@ -50,7 +50,7 @@ const rateSchema = new Schema({
     }
 });
 
-const Rate = model('Rate', rateSchema);
+export const Rate = model('Rate', rateSchema);
 
 // Bills Model
 const billsSchema = new Schema({
@@ -76,7 +76,7 @@ const billsSchema = new Schema({
     }
 });
 
-const Bills = model('Bills', billsSchema);
+export const Bills = model('Bills', billsSchema);
 
 // Chat Model
 const chatSchema = new Schema({
@@ -96,7 +96,7 @@ const chatSchema = new Schema({
     }
 });
 
-const Chat = model('Chat', chatSchema);
+export const Chat = model('Chat', chatSchema);
 
 // Message Model
 const messageSchema = new Schema({
@@ -113,7 +113,7 @@ const messageSchema = new Schema({
     }
 });
 
-const Message = model('Message', messageSchema);
+export const Message = model('Message', messageSchema);
 
 // Announcement Model
 const announcementSchema = new Schema({
@@ -129,7 +129,7 @@ const announcementSchema = new Schema({
     }
 });
 
-const Announcement = model('Announcement', announcementSchema);
+export const Announcement = model('Announcement', announcementSchema);
 
 // Events Model
 const eventSchema = new Schema({
@@ -161,7 +161,7 @@ const eventSchema = new Schema({
     }
 });
 
-const Events = model('Events', eventSchema);
+export const Events = model('Events', eventSchema);
 
 // Official Holidays Model
 const officialHolidaySchema = new Schema({
@@ -178,7 +178,7 @@ const officialHolidaySchema = new Schema({
     }
 });
 
-const OfficialHoliday = model('OfficialHoliday', officialHolidaySchema);
+export const OfficialHoliday = model('OfficialHoliday', officialHolidaySchema);
 
 // Office Timings Model
 const officeTimingsSchema = new Schema({
@@ -194,16 +194,5 @@ const officeTimingsSchema = new Schema({
     }
 });
 
-const OfficeTimings = model('OfficeTimings', officeTimingsSchema);
+export const OfficeTimings = model('OfficeTimings', officeTimingsSchema);
 
-export default {
-    Consumption,
-    Rate,
-    Bills,
-    Chat,
-    Message,
-    Announcement,
-    Events,
-    OfficialHoliday,
-    OfficeTimings
-};

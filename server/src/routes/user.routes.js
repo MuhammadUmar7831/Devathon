@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser,loginUser,logoutUser,updateUser} from "../controllers/user.controllers.js";
+import { registerUser,loginUser,logoutUser,updateUser,getUser,getBills,getAdminBills,generateBill} from "../controllers/user.controllers.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 
@@ -13,5 +13,10 @@ router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT,logoutUser)
 router.route("/get-user").get(verifyJWT,getUser)
 router.route("/update-user").put(verifyJWT,updateUser)
+router.route("/get-bills").put(verifyJWT,getBills)
+router.route("/get-admin-bills").put(verifyJWT,getAdminBills)
+router.route("/generate-bill").post(verifyJWT,generateBill)
+
+
 
 export default router
