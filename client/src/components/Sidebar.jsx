@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import Logo from "../icons/logo"
-import DashboardIcon from "../icons/DashboardIcon"
 import SettingsIcon from "../icons/SettingsIcon"
 import UserIcon from "../icons/UserIcon"
+import DashboardIcon from "../icons/DashboardIcon"
 
 export default function Sidebar() {
   return (

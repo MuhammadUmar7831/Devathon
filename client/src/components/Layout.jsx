@@ -5,7 +5,7 @@ import Hamburger from 'hamburger-react'
 export default function Layout({ children }) {
 
     const [isSidebarOpen, setSidebarOpen] = useState(true)
-    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         const handleResize = () => {
@@ -22,7 +22,6 @@ export default function Layout({ children }) {
         if (screenWidth < 768) {
             setSidebarOpen(false)
         }
-        console.log(screenWidth > 768 || isSidebarOpen)
     }, [screenWidth])
     return (
         <div className='flex relative'>

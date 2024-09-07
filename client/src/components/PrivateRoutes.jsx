@@ -1,6 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CustomLoader from "../interface/CustomLoader"
 import { useDispatch, useSelector } from "react-redux"
+import { Navigate, Outlet } from "react-router-dom"
+import Layout from "./Layout"
 
 const PrivateRoutes = ({ role }) => {
   const { user } = useSelector((state) => state.user)
@@ -32,7 +34,7 @@ const PrivateRoutes = ({ role }) => {
 
   return user !== null ? (
     <>
-      <Outlet />
+      <Layout children={<Outlet />} />
     </>
   ) : (
     <Navigate to="/auth/login" />
