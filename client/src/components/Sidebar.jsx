@@ -2,7 +2,11 @@ import React from "react"
 import Logo from "../icons/logo"
 import SettingsIcon from "../icons/SettingsIcon"
 import UserIcon from "../icons/UserIcon"
+
+import { Link } from "react-router-dom"
+
 import DashboardIcon from "../icons/DashboardIcon"
+
 
 export default function Sidebar() {
   return (
@@ -13,14 +17,20 @@ export default function Sidebar() {
           <p class="text-2xl leading-6 text-white">Davathon</p>
         </div>
         <div class="mt-6 flex flex-col justify-start items-center  pl-4 w-full space-y-3 pb-5 ">
-          <button class="flex jusitfy-start items-center space-x-6 w-full focus:outline-none  focus:text-indigo-400  text-white rounded">
+          <Link
+            to="/admin/manageAccounts"
+            class="flex jusitfy-start items-center space-x-6 w-full focus:outline-none  focus:text-indigo-400  text-white rounded"
+          >
             <DashboardIcon />
-            <p class="text-base leading-4 ">Dashboard</p>
-          </button>
-          <button class="flex jusitfy-start items-center w-full space-x-6 focus:outline-none text-white focus:text-indigo-400  rounded">
+            <p class="text-base leading-4 ">Customer Support</p>
+          </Link>
+          <Link
+            to="/admin/bills"
+            class="flex jusitfy-start items-center w-full space-x-6 focus:outline-none text-white focus:text-indigo-400  rounded"
+          >
             <UserIcon />
-            <p class="text-base leading-4 ">Users</p>
-          </button>
+            <p class="text-base leading-4 ">Bills</p>
+          </Link>
         </div>
       </div>
       <div class=" flex justify-between items-center w-full px-6 py-4">

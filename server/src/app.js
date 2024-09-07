@@ -1,7 +1,9 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import dotenv from "dotenv"
 
+dotenv.config()
 const app = express()
 
 app.use(
@@ -19,7 +21,6 @@ app.use(
 ) //Data from URL check
 app.use(express.static("public")) //Static files Check
 app.use(cookieParser()) //Cookies Check
-
 
 //ROUTES import
 import userRoutes from "./routes/user.routes.js"

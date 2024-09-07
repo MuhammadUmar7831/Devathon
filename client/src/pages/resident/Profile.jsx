@@ -83,4 +83,5 @@ export default function Profile() {
       <span className="text-gray-900 text-base">{user.email}</span>
     </div>
   )
+
 }
