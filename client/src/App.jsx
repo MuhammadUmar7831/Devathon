@@ -1,4 +1,5 @@
-import Sidebar from "./components/sidebar"
+import Layout from "./components/Layout"
+import Profile from "./pages/resident/Profile"
 
 import {
   BrowserRouter as Router,
@@ -32,6 +33,7 @@ function App() {
           <Route element={<PrivateRoutes role="customerSupport" />}></Route>
         </Routes>
       </Router>
+
     </>
   )
 }
