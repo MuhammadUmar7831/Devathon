@@ -1,6 +1,4 @@
-
 import Layout from "./components/Layout"
-
 
 import {
   BrowserRouter as Router,
@@ -11,13 +9,13 @@ import {
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 import PrivateRoutes from "./components/PrivateRoutes"
+import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
 
 import PrivateRoutes from "./components/PrivateRoutes"
 import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
 import AddCustomerSupport from "./pages/admin/addCustomerSupport/AddCustomerSupport"
 import Bills from "./pages/admin/bills/Bills"
 import ViewBills from "./pages/resident/viewBills/ViewBills"
-
 
 function App() {
   return (
@@ -28,8 +26,6 @@ function App() {
           <Route path="/" element={<Navigate to="/auth/login" />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<Signup />} />
-
-
 
           {/* Admin Routes */}
           <Route element={<PrivateRoutes role="admin" />}>
@@ -45,7 +41,6 @@ function App() {
           <Route element={<PrivateRoutes role="resident" />}>
             <Route path="/resident/viewBills" element={<ViewBills />} />
           </Route>
-
           {/* Customer Support Routes */}
           <Route element={<PrivateRoutes role="customerSupport" />}></Route>
         </Routes>

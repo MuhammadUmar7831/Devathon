@@ -1,6 +1,7 @@
 import React from "react"
 import AccountsTable from "./AccountsTable"
 import { Link } from "react-router-dom"
+import Sidebar from "../../../components/sidebar"
 
 const ManageAccounts = () => {
   return (
