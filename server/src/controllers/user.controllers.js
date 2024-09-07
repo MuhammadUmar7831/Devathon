@@ -24,11 +24,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
 }
 
 export const registerUser = asyncHandler(async (req, res, next) => {
-const { email, password, FullName } = req.body.user
+  const { email, password, FullName } = req.body.user
   const role = "resident"
   const avatar = "/user.png"
   const username = FullName
-
 
   let FoundUser = await User.findOne({ email })
 
@@ -59,7 +58,9 @@ const { email, password, FullName } = req.body.user
   //     throw new ApiError(500,"Failed - Authentication not triggered")
   //   }
 
-  const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id)
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id
+  )
   const options = {
     httpOnly: true,
     secure: true,
@@ -176,7 +177,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(
     id,
     {
-      $set: { name, avatar },
+      $set: { Fullname: name, avatar },
     },
     {
       new: true,
@@ -232,8 +233,8 @@ export const getBills = asyncHandler(async (req, res) => {
     },
   ])
 
-  if(!bills.length){
-    return res.status(404).json({message: "No bills found"})
+  if (!bills.length) {
+    return res.status(404).json({ message: "No bills found" })
   }
 
   return res.status(200).json(new ApiResponse(200, bills, "Bills found"))
@@ -270,116 +271,115 @@ export const getAdminBills = asyncHandler(async (req, res) => {
   // Get the total count of bills for pagination purposes
   const totalBills = await Bills.countDocuments()
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          totalBills,
-          currentPage: page,
-          totalPages: Math.ceil(totalBills / limit),
-          bills,
-        },
-        "Bills found"
-      )
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        totalBills,
+        currentPage: page,
+        totalPages: Math.ceil(totalBills / limit),
+        bills,
+      },
+      "Bills found"
     )
+  )
 })
 
-
 export const setUserConsumption = asyncHandler(async (req, res) => {
-  const {id,units,month} = req.body
+  const { id, units, month } = req.body
 
   const user = await User.findById(id)
 
-  if(!user){
-    throw new ApiError(404,"User not found")
+  if (!user) {
+    throw new ApiError(404, "User not found")
   }
 
   const consumption = await Consumption.create({
     userID: user._id,
     units,
-    month
+    month,
   })
 
-  if(!consumption){
-    throw new ApiError(500,"Failed - Consumption not set")
+  if (!consumption) {
+    throw new ApiError(500, "Failed - Consumption not set")
   }
 })
 
-
 export const setRate = asyncHandler(async (req, res) => {
-  const {perunit,above100,above200,above300,latePayment} = req.body
+  const { perunit, above100, above200, above300, latePayment } = req.body
 
   const rate = await Rate.create({
     perunit,
     above100,
     above200,
     above300,
-    latePayment
+    latePayment,
   })
 
-  if(!rate){
-    throw new ApiError(500,"Failed - Rate not set")
+  if (!rate) {
+    throw new ApiError(500, "Failed - Rate not set")
   }
 })
 
 export const generateBill = asyncHandler(async (req, res) => {
-  const { userID, month } = req.body;
+  const { userID, month } = req.body
 
   const checkAdmin = await User.findById(req.user?._id)
 
-  if(checkAdmin.role !== "admin"){
-    throw new ApiError(403,"Unauthorized Action")
+  if (checkAdmin.role !== "admin") {
+    throw new ApiError(403, "Unauthorized Action")
   }
 
   // Find the consumption data for the user and the given month
-  const userConsumption = await Consumption.findOne({ userID, month });
+  const userConsumption = await Consumption.findOne({ userID, month })
 
   if (!userConsumption) {
-    throw new ApiError(404, "User consumption not found for the specified month");
+    throw new ApiError(
+      404,
+      "User consumption not found for the specified month"
+    )
   }
 
   // Find the rate details
-  const rateDetails = await Rate.findOne();
+  const rateDetails = await Rate.findOne()
   if (!rateDetails) {
-    throw new ApiError(404, "Rate not found");
+    throw new ApiError(404, "Rate not found")
   }
 
-  const { perunit, above100, above200, above300, latePayment } = rateDetails;
+  const { perunit, above100, above200, above300, latePayment } = rateDetails
 
   // Calculate the total based on consumption
-  let total = 0;
+  let total = 0
 
   if (userConsumption.units <= 100) {
-    total = userConsumption.units * perunit;
+    total = userConsumption.units * perunit
   } else if (userConsumption.units > 100 && userConsumption.units <= 200) {
-    total = userConsumption.units * perunit * above100;
+    total = userConsumption.units * perunit * above100
   } else if (userConsumption.units > 200 && userConsumption.units <= 300) {
-    total = userConsumption.units * perunit * above200;
+    total = userConsumption.units * perunit * above200
   } else {
-    total = userConsumption.units * perunit * above300;
+    total = userConsumption.units * perunit * above300
   }
 
   // Late payment logic (assuming dueDate exists in the future for simplicity)
-  const today = new Date();
-  const dueDate = new Date(`${month}-10`); // Assuming bill is due on the 15th of the month
+  const today = new Date()
+  const dueDate = new Date(`${month}-10`) // Assuming bill is due on the 15th of the month
 
-  let latePaymentTotal = total;
+  let latePaymentTotal = total
   if (today > dueDate) {
-    latePaymentTotal = total + (total * latePayment);
+    latePaymentTotal = total + total * latePayment
   }
 
   // Create and save the bill
   const newBill = await Bills.create({
     consumption: userConsumption._id,
-    status: 'unpaid',
+    status: "unpaid",
     dueDate, // Set dueDate to a calculated value or a default value
     total: latePaymentTotal,
-  });
+  })
 
   // Send the generated bill as a response
-  return res.status(201).json(new ApiResponse(201, newBill, "Bill generated successfully"));
-});
-
-
+  return res
+    .status(201)
+    .json(new ApiResponse(201, newBill, "Bill generated successfully"))
+})

@@ -17,8 +17,9 @@ const PrivateRoutes = ({ role }) => {
   const getUser = async (role) => {
     if (user === null) {
       const response = await getUserApi()
+      console.log(response)
       if (response.success) {
-        dispatch(setUser(response.user))
+        dispatch(setUser(response.data))
       }
     }
     setLoading(false)

@@ -1,50 +1,62 @@
-import React, { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-import { MdModeEditOutline } from "react-icons/md"
-import useCloudinary from "../../hooks/useCloudinary"
-import { RxCross1 } from "react-icons/rx"
-import { useSelector } from "react-redux"
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { MdModeEditOutline } from "react-icons/md";
+import useCloudinary from "../../hooks/useCloudinary";
+import { RxCross1 } from "react-icons/rx";
+import { useSelector } from "react-redux";
+import { updateUserApi } from "../../api/user.api";
 
 export default function Profile() {
-  const { user } = useSelector((state) => state.user)
-  const [imageUrl, setImageUrl] = useState("")
-  const [name, setName] = useState("Jhon Doe")
-  const [isEditingName, setIsEditingName] = useState(false)
-  const { uploadImage, deleteImage } = useCloudinary()
+  const { user } = useSelector((state) => state.user);
+  const [imageUrl, setImageUrl] = useState("");
+  const [name, setName] = useState("Jhon Doe");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const { uploadImage, deleteImage } = useCloudinary();
 
   useEffect(() => {
-    setName(user.name)
-    setImageUrl(user.avatar)
-  }, [])
+    setName(user.FullName);
+    setImageUrl(user.avatar);
+  }, []);
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        toast.error("The selected file is not an image")
-        return
+        toast.error("The selected file is not an image");
+        return;
       }
-      const imageUrl = URL.createObjectURL(file)
-      setImageUrl(imageUrl)
+      const imageUrl = URL.createObjectURL(file);
+      setImageUrl(imageUrl);
 
-      await deleteImage(imageUrl)
-      const res = await uploadImage(file)
+      await deleteImage(imageUrl);
+      const res = await uploadImage(file);
       if (res.success) {
-        setImageUrl(res.imageUrl)
-        toast.success("Image uploaded")
-        // TODO update user on backend
+        setImageUrl(res.imageUrl);
+        const _res = await updateUserApi({
+          name: user.Fullname,
+          avatar: res.imageUrl,
+        });
+        if (_res.success) {
+          toast.success("Image uploaded");
+        } else {
+          toast.error("Failed to update user");
+        }
       }
     }
-  }
+  };
 
-  const handleUpdateUser = (e) => {
-    e.preventDefault()
-    setIsEditingName(false)
-    if (name !== user.name) {
-      // todo request server
-      toast.success("Name updated")
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+    setIsEditingName(false);
+    if (name !== user.FullName) {
+      const res = await updateUserApi({ name, avatar: imageUrl });
+      if (res.success) {
+        toast.success("Name updated");
+      } else {
+        toast.error("Failed to update user");
+      }
     }
-  }
+  };
 
   return (
     <div className="mt-16 flex flex-col justify-center items-center text-center w-full h-full">
@@ -58,7 +70,9 @@ export default function Profile() {
             multiple={false}
             className="text-transparent h-full"
           />{" "}
-          <span className="absolute top-[40%] left-[40%]"><MdModeEditOutline /></span>
+          <span className="absolute top-[40%] left-[40%]">
+            <MdModeEditOutline />
+          </span>
         </div>
       </div>
       <div className="mt-10 flex gap-5 justify-center items-center text-3xl">
@@ -82,6 +96,5 @@ export default function Profile() {
       </div>
       <span className="text-gray-900 text-base">{user.email}</span>
     </div>
-  )
-
+  );
 }

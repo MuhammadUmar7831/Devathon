@@ -1,13 +1,5 @@
 import { Router } from "express"
-import {
-  registerUser,
-  loginUser,
-  logoutUser,
-  updateUser,
-  getUser,
-} from "../controllers/user.controllers.js"
 import { verifyJWT } from "../middlewares/verifyJWT.js"
-import { Router } from "express";
 import { registerUser,loginUser,logoutUser,updateUser,getUser,getBills,getAdminBills,generateBill} from "../controllers/user.controllers.js";
 
 

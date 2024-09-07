@@ -29,3 +29,12 @@ export const signUpUserApi = async (user) => {
     return { success: false, message: error.message };
   }
 };
+
+export const updateUserApi = async ({ name, avatar }) => {
+  try {
+    const response = await axios.put(`/api/user/update-user`, { name, avatar });
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};

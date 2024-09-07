@@ -1,12 +1,11 @@
-import React from "react"
-import Logo from "../icons/logo"
-import SettingsIcon from "../icons/SettingsIcon"
-import UserIcon from "../icons/UserIcon"
+import React from "react";
+import Logo from "../icons/logo";
+import SettingsIcon from "../icons/SettingsIcon";
+import UserIcon from "../icons/UserIcon";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-import DashboardIcon from "../icons/DashboardIcon"
-
+import DashboardIcon from "../icons/DashboardIcon";
 
 export default function Sidebar() {
   return (
@@ -33,7 +32,10 @@ export default function Sidebar() {
           </Link>
         </div>
       </div>
-      <div class=" flex justify-between items-center w-full px-6 py-4">
+      <Link
+        to="/resident/profile"
+        class=" flex justify-between items-center w-full px-6 py-4"
+      >
         <div class="flex justify-center items-center  space-x-2">
           <div>
             <img
@@ -52,7 +54,7 @@ export default function Sidebar() {
           </div>
         </div>
         <SettingsIcon />
-      </div>
+      </Link>
     </div>
-  )
+  );
 }
