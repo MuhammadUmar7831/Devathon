@@ -119,7 +119,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     )
 })
 
-const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
   //find user again but how?? use middleware
 
   await User.findByIdAndUpdate(
@@ -144,7 +144,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
-const getUser = asyncHandler(async (req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
   const id = req.user?._id
 
   const user = await User.findById(id)
@@ -155,7 +155,8 @@ const getUser = asyncHandler(async (req, res) => {
 
   return res.status(200).json(new ApiResponse(200, user, "User found"))
 })
-const updateUser = asyncHandler(async (req, res) => {
+
+export const updateUser = asyncHandler(async (req, res) => {
   const id = req.user?._id
   const { name, avatar } = req.body
 
@@ -181,14 +182,7 @@ const getBills = asyncHandler(async (req, res) => {
 
   const user = await User.findById(id)
 
-  if(!user){
-    throw new ApiError(404,"User not found")
+  if (!user) {
+    throw new ApiError(404, "User not found")
   }
 })
-
-export default {
-  registerUser,
-  loginUser,
-  logoutUser,
-  updateUser
-}

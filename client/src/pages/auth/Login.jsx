@@ -1,7 +1,33 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { loginApi } from "../../api/user.api";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/user/userSlice";
 
 const Login = () => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const login = async (e) => {
+    e.preventDefault();
+    const res = await loginApi({ email, password });
+    if (res.success) {
+      dispatch(setUser(res.data.user));
+      if (res.data.user.role === "admin"){
+        navigate("/admin/manageAccounts")
+      } else if (res.data.user.role === "resident") {
+        navigate("/resident/viewBills")
+      } else {
+        navigate("/")
+      }
+      toast.success("Login Successful");
+    } else {
+      toast.error(res.message);
+    }
+  };
   return (
     <>
       <div className="w-full h-screen flex flex-col items-center justify-center text-black">
@@ -17,7 +43,7 @@ const Login = () => {
               <FcGoogle className="text-xl" /> Continue with Google
             </button>
           </div> */}
-          <form className="flex flex-col items-center">
+          <form onSubmit={login} className="flex flex-col items-center">
             <div className="flex flex-col justify-center items-center md:w-2/3 w-full gap-4">
               <input
                 className="w-full focus:outline-none bg-gray-100 p-4 rounded-md"
@@ -25,6 +51,8 @@ const Login = () => {
                 name="email"
                 required
                 placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <input
@@ -32,6 +60,8 @@ const Login = () => {
                 name="password"
                 required
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 className="bg-gray-900 hover:bg-gray-800 rounded-md text-white py-2 px-4 mt-2 w-full bg-orange disabled:cursor-not-allowed"
@@ -53,7 +83,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
