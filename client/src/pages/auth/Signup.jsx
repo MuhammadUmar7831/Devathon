@@ -1,7 +1,9 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSignup } from "./useSignup";
 
 const Signup = () => {
+  const { handleChange, signupUser } = useSignup();
   return (
     <>
       <div className="w-full h-screen flex flex-col items-center justify-center text-black">
@@ -17,14 +19,15 @@ const Signup = () => {
         <FcGoogle className="text-xl" /> Continue with Google
       </button>
     </div> */}
-          <form className="flex flex-col items-center">
+          <form onSubmit={signupUser} className="flex flex-col items-center">
             <div className="flex flex-col justify-center items-center md:w-2/3 w-full gap-4">
               <input
                 className="w-full focus:outline-none bg-gray-100 p-4 rounded-md"
-                type="userName"
-                name="userName"
+                type="text"
+                name="FullName"
                 required
                 placeholder="Name"
+                onChange={handleChange}
               />
               <input
                 className="w-full focus:outline-none bg-gray-100 p-4 rounded-md"
@@ -32,6 +35,7 @@ const Signup = () => {
                 name="email"
                 required
                 placeholder="Email address"
+                onChange={handleChange}
               />
 
               <input
@@ -40,6 +44,7 @@ const Signup = () => {
                 type="password"
                 required
                 placeholder="Password"
+                onChange={handleChange}
               />
 
               <input
@@ -48,6 +53,7 @@ const Signup = () => {
                 type="password"
                 required
                 placeholder="Confirm Password"
+                onChange={handleChange}
               />
               <button
                 className="bg-gray-900 hover:bg-gray-800 rounded-md text-white py-2 px-4 mt-2 w-full bg-orange disabled:cursor-not-allowed"
@@ -69,7 +75,7 @@ const Signup = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;
