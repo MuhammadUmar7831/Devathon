@@ -127,6 +127,19 @@ const logoutUser = asyncHandler(async (req,res)=>{
     .clearCookie("refreshToken",options)
     .json(new ApiResponse(200,{},"User logged Out"))
   })
+
+const getUser = asyncHandler(async (req,res)=>{
+    const id = req.user?._id;
+
+    const user  = await User.findById(id);
+
+    if(!user){
+        throw new ApiError(404,"User not found")
+    }
+
+    return res.status(200).json(new ApiResponse(200,user,"User found"))
+
+})
 export default {
     registerUser,
     loginUser,
