@@ -1,12 +1,13 @@
-import React from "react"
-import Logo from "../icons/logo"
-import SettingsIcon from "../icons/SettingsIcon"
-import UserIcon from "../icons/UserIcon"
+import React from "react";
+import Logo from "../icons/logo";
+import SettingsIcon from "../icons/SettingsIcon";
+import UserIcon from "../icons/UserIcon";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-import DashboardIcon from "../icons/DashboardIcon"
-
+import DashboardIcon from "../icons/DashboardIcon";
+import CustomerSupportIcon from "../icons/CustomerSupportIcon";
+import BillIcon from "../icons/BillIcon";
 
 export default function Sidebar() {
   return (
@@ -14,21 +15,21 @@ export default function Sidebar() {
       <div className="w-full">
         <div class="flex justify-start p-6 items-center space-x-3 w-full">
           <Logo />
-          <p class="text-2xl leading-6 text-white">Davathon</p>
+          <p class="text-2xl leading-6 text-white">Devathon</p>
         </div>
         <div class="mt-6 flex flex-col justify-start items-center  pl-4 w-full space-y-3 pb-5 ">
           <Link
             to="/admin/manageAccounts"
             class="flex jusitfy-start items-center space-x-6 w-full focus:outline-none  focus:text-indigo-400  text-white rounded"
           >
-            <DashboardIcon />
+            <CustomerSupportIcon />
             <p class="text-base leading-4 ">Customer Support</p>
           </Link>
           <Link
             to="/admin/bills"
             class="flex jusitfy-start items-center w-full space-x-6 focus:outline-none text-white focus:text-indigo-400  rounded"
           >
-            <UserIcon />
+            <BillIcon />
             <p class="text-base leading-4 ">Bills</p>
           </Link>
         </div>
@@ -54,5 +55,5 @@ export default function Sidebar() {
         <SettingsIcon />
       </div>
     </div>
-  )
+  );
 }

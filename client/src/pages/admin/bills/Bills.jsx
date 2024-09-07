@@ -1,7 +1,20 @@
-import React from "react"
-import BillTable from "./BillTable"
+import React, { useState } from "react";
+import BillTable from "./BillTable";
+import { generateBillApi } from "../../../api/bills.api";
+import toast from "react-hot-toast";
 
 const Bills = () => {
+  const [bills, setBills] = useState(null);
+  const generateBill = async () => {
+    // try to insert new user into database
+    const response = await generateBillApi();
+    if (response.success) {
+      console.log(response);
+      toast.success("Generated Successfully");
+    } else {
+      toast.error(response.error);
+    }
+  };
   return (
     <>
       <div class="w-full p-8 flex flex-col gap-10">
@@ -22,7 +35,10 @@ const Bills = () => {
               Search
             </button>
           </div>
-          <button className="bg-gray-900 hover:bg-gray-800 rounded-md text-white p-2 disabled:cursor-not-allowed">
+          <button
+            onClick={generateBill}
+            className="bg-gray-900 hover:bg-gray-800 rounded-md text-white p-2 disabled:cursor-not-allowed"
+          >
             Generate Bills
           </button>
         </div>
@@ -31,7 +47,7 @@ const Bills = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Bills
+export default Bills;
