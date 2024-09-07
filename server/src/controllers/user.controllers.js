@@ -321,23 +321,27 @@ export const setRate = asyncHandler(async (req, res) => {
   }
 })
 
-export const generateBill = asyncHandler(async (req, res) => {
-  const { userID, month } = req.body;
+export const generateBillsForAllUsers = asyncHandler(async (req, res) => {
+  // Get the current month in "MM-YYYY" format
+  const now = new Date();
+  const month = (`0${now.getMonth() + 1}`).slice(-2); // Add 1 since getMonth() returns 0-11
+  const year = now.getFullYear();
+  const currentMonth = `${month}-${year}`;
 
-  const checkAdmin = await User.findById(req.user?._id)
-
-  if(checkAdmin.role !== "admin"){
-    throw new ApiError(403,"Unauthorized Action")
+  // Check if the logged-in user is an admin
+  const checkAdmin = await User.findById(req.user?._id);
+  if (checkAdmin.role !== "admin") {
+    throw new ApiError(403, "Unauthorized Action");
   }
 
-  // Find the consumption data for the user and the given month
-  const userConsumption = await Consumption.findOne({ userID, month });
+  // Fetch all users' consumption data for the current month
+  const allConsumptions = await Consumption.find({ month: currentMonth });
 
-  if (!userConsumption) {
-    throw new ApiError(404, "User consumption not found for the specified month");
+  if (!allConsumptions.length) {
+    throw new ApiError(404, "No consumptions found for the current month");
   }
 
-  // Find the rate details
+  // Find the rate details for bill calculations
   const rateDetails = await Rate.findOne();
   if (!rateDetails) {
     throw new ApiError(404, "Rate not found");
@@ -345,38 +349,52 @@ export const generateBill = asyncHandler(async (req, res) => {
 
   const { perunit, above100, above200, above300, latePayment } = rateDetails;
 
-  // Calculate the total based on consumption
-  let total = 0;
+  // Initialize an array to store the generated bills
+  const generatedBills = [];
 
-  if (userConsumption.units <= 100) {
-    total = userConsumption.units * perunit;
-  } else if (userConsumption.units > 100 && userConsumption.units <= 200) {
-    total = userConsumption.units * perunit * above100;
-  } else if (userConsumption.units > 200 && userConsumption.units <= 300) {
-    total = userConsumption.units * perunit * above200;
-  } else {
-    total = userConsumption.units * perunit * above300;
+  // Loop through each user's consumption and generate their bill
+  for (const consumption of allConsumptions) {
+    let total = 0;
+
+    // Calculate the total based on consumption
+    if (consumption.units <= 100) {
+      total = consumption.units * perunit;
+    } else if (consumption.units > 100 && consumption.units <= 200) {
+      total = consumption.units * perunit * above100;
+    } else if (consumption.units > 200 && consumption.units <= 300) {
+      total = consumption.units * perunit * above200;
+    } else {
+      total = consumption.units * perunit * above300;
+    }
+
+    // Late payment logic (assuming dueDate is the 10th of the current month)
+    const today = new Date();
+    const dueDate = new Date(`${currentMonth}-10`); // Assuming due on the 10th
+
+    let latePaymentTotal = total;
+    if (today > dueDate) {
+      latePaymentTotal = total + (total * latePayment);
+    }
+
+    // Create and save the bill for the current user
+    const newBill = await Bills.create({
+      consumption: consumption._id,
+      status: 'unpaid',
+      dueDate, // Set dueDate to the calculated value or default
+      total: latePaymentTotal,
+    });
+
+    // Push the generated bill to the array
+    generatedBills.push(newBill);
   }
 
-  // Late payment logic (assuming dueDate exists in the future for simplicity)
-  const today = new Date();
-  const dueDate = new Date(`${month}-10`); // Assuming bill is due on the 15th of the month
+  // Return the array of generated bills
+  // return res.status(201).json({
+  //   message: "Bills generated successfully",
+  //   bills: generatedBills,
+  // });
 
-  let latePaymentTotal = total;
-  if (today > dueDate) {
-    latePaymentTotal = total + (total * latePayment);
-  }
-
-  // Create and save the bill
-  const newBill = await Bills.create({
-    consumption: userConsumption._id,
-    status: 'unpaid',
-    dueDate, // Set dueDate to a calculated value or a default value
-    total: latePaymentTotal,
-  });
-
-  // Send the generated bill as a response
-  return res.status(201).json(new ApiResponse(201, newBill, "Bill generated successfully"));
+  return res.status(201)
+  .json(new ApiResponse(201, generatedBills, "Bills generated successfully"));
 });
-
 
