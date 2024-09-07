@@ -1,5 +1,5 @@
-
 import Sidebar from "./components/sidebar"
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,14 +9,11 @@ import {
 import Login from "./pages/auth/Login"
 import Signup from "./pages/auth/Signup"
 
-
 function App() {
   return (
     <>
-
-
       <Router>
-      <Sidebar />
+        <Sidebar />
         <Routes>
           {/* auth routes */}
           <Route path="/" element={<Navigate to="/auth/login" />} />
