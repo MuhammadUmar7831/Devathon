@@ -1,38 +1,37 @@
-import { useEffect, useState } from "react"
-import CustomLoader from "../interface/CustomLoader"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react";
+import CustomLoader from "../interface/CustomLoader";
+import { useDispatch, useSelector } from "react-redux";
 
-import Layout from "./Layout"
-import { setUser } from "../redux/user/userSlice"
-import { Navigate, Outlet } from "react-router-dom"
-import { getUserApi } from "../api/user.api"
-
+import Layout from "./Layout";
+import { setUser } from "../redux/user/userSlice";
+import { Navigate, Outlet } from "react-router-dom";
+import { getUserApi } from "../api/user.api";
 
 const PrivateRoutes = ({ role }) => {
-  const { user } = useSelector((state) => state.user)
-  const [loading, setLoading] = useState(true)
-  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   // Get user Function
   const getUser = async (role) => {
     if (user === null) {
-      const response = await getUserApi()
+      const response = await getUserApi();
       if (response.success) {
-        dispatch(setUser(response.user))
+        dispatch(setUser(response.data));
       }
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
   useEffect(() => {
-    getUser()
-  }, [user])
+    getUser();
+  }, [user]);
 
   if (loading) {
     return (
       <>
         <CustomLoader loadingText="Authenticating..." />
       </>
-    )
+    );
   }
 
   return user !== null ? (
@@ -41,7 +40,7 @@ const PrivateRoutes = ({ role }) => {
     </>
   ) : (
     <Navigate to="/auth/login" />
-  )
-}
+  );
+};
 
-export default PrivateRoutes
+export default PrivateRoutes;
