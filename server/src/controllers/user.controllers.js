@@ -56,8 +56,16 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   //     throw new ApiError(500,"Failed - Authentication not triggered")
   //   }
 
+  const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id)
+  const options = {
+    httpOnly: true,
+    secure: true,
+  }
+
   return res
     .status(201)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(201, "User created successfully", createdUser))
 })
 
