@@ -1,22 +1,22 @@
-import Layout from "./components/Layout"
+import Layout from "./components/Layout";
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom"
-import Login from "./pages/auth/Login"
-import Signup from "./pages/auth/Signup"
-import PrivateRoutes from "./components/PrivateRoutes"
-import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
+} from "react-router-dom";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import PrivateRoutes from "./components/PrivateRoutes";
+import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts";
 
-import AddCustomerSupport from "./pages/admin/addCustomerSupport/AddCustomerSupport"
-import Bills from "./pages/admin/bills/Bills"
-import ViewBills from "./pages/resident/viewBills/ViewBills"
+import AddCustomerSupport from "./pages/admin/addCustomerSupport/AddCustomerSupport";
+import Bills from "./pages/admin/bills/Bills";
+import ViewBills from "./pages/resident/viewBills/ViewBills";
 
-import { Toaster } from "react-hot-toast"
-
+import { Toaster } from "react-hot-toast";
+import Profile from "./pages/resident/Profile";
 
 function App() {
   return (
@@ -41,19 +41,15 @@ function App() {
 
           {/* Resident Routes */}
           <Route element={<PrivateRoutes role="resident" />}>
-
             <Route path="/resident/viewBills" element={<ViewBills />} />
-          </Route>
             <Route path="/resident/profile" element={<Profile />} />
           </Route>
-
-
           {/* Customer Support Routes */}
           <Route element={<PrivateRoutes role="customerSupport" />}></Route>
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
