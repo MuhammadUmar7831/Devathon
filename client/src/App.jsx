@@ -12,6 +12,7 @@ import PrivateRoutes from "./components/PrivateRoutes"
 import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
 import AddCustomerSupport from "./pages/admin/addCustomerSupport/AddCustomerSupport"
 import Bills from "./pages/admin/bills/Bills"
+import ViewBills from "./pages/resident/viewBills/ViewBills"
 
 import PrivateRoutes from "./components/PrivateRoutes"
 import ManageAccounts from "./pages/admin/manageAccounts/ManageAccounts"
