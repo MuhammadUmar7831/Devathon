@@ -176,7 +176,15 @@ const updateUser = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, user, "User updated"))
 })
 
+const getBills = asyncHandler(async (req, res) => {
+  const id = req.user?._id
 
+  const user = await User.findById(id)
+
+  if(!user){
+    throw new ApiError(404,"User not found")
+  }
+})
 
 export default {
   registerUser,
