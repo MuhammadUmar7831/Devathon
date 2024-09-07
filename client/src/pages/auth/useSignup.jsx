@@ -40,7 +40,7 @@ export const useSignup = () => {
       dispatch(setUser(response.user));
       toast.success("Registered Successfully");
       // Route the user to the home page
-      navigate("/resident/profile");
+      navigate("/resident/viewBills");
     } else {
       setError(response.error);
     }
