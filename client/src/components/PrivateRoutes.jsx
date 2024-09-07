@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import CustomLoader from "../interface/CustomLoader"
 import { useDispatch, useSelector } from "react-redux"
+
 import Layout from "./Layout"
 import { setUser } from "../redux/user/userSlice"
 import { Navigate, Outlet } from "react-router-dom"
 import { getUserApi } from "../api/user.api"
+
 
 const PrivateRoutes = ({ role }) => {
   const { user } = useSelector((state) => state.user)
